@@ -72,6 +72,7 @@ public class JournalServiceImpl implements JournalService{
     }
 
 
+    /*To do */
     @Override
     public JournalDTO updateJournalEntry(JournalDTO journalDTO, UUID entryId){
         // 1) Search for the entry by Id
