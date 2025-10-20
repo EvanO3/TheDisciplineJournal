@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.journal.discipline.tracker.DTOs.JournalDTO;
@@ -54,8 +58,18 @@ public class JournalServiceImpl implements JournalService{
      *  Add Pagination
      */
     @Override
-    public JournalResponse getAllJournalEntry() {
-        List<JournalEntry> journals = repository.findAll();
+    public JournalResponse getAllJournalEntry(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder ) {
+       Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc") ? 
+       Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+
+       Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+       Page<JournalEntry> journalPage =repository.findAll(pageDetails);
+       List<JournalEntry> journals = journalPage.getContent();
+
+
+
+
         if(journals.isEmpty()){
             throw new ApiException("No Journals Found");
         }
@@ -64,8 +78,12 @@ public class JournalServiceImpl implements JournalService{
        .map(journal -> modelMapper.map(journal, JournalDTO.class)).collect(Collectors.toList());
 
        JournalResponse response = new JournalResponse();
-
        response.setContent(journalDTO);
+       response.setPageNumber(journalPage.getNumber());
+       response.setTotalPages(journalPage.getTotalPages());
+       response.setPageSize(journalPage.getSize());
+       response.setLastPage(journalPage.isLast());
+
 
        return response;
 
