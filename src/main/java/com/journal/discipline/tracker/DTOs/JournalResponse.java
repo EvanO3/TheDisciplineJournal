@@ -11,5 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JournalResponse {
     private List<JournalDTO> content;
-    
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Integer totalPages;
+    private Long totalElements;
+    private boolean lastPage;
 }

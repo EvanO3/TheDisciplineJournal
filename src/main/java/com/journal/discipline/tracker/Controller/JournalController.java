@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.journal.discipline.tracker.Config.AppConstants;
 import com.journal.discipline.tracker.DTOs.JournalDTO;
 import com.journal.discipline.tracker.DTOs.JournalResponse;
 import com.journal.discipline.tracker.Model.JournalEntry;
@@ -35,10 +37,16 @@ public class JournalController {
         return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
   
     }
+    /*TODO:
+     * Pagination
+     */
 
     @GetMapping("/public/journal")
-    public ResponseEntity<JournalResponse> getAllEntries(){
-        JournalResponse response = journalService.getAllJournalEntry();
+    public ResponseEntity<JournalResponse> getAllEntries(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+    @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+    @RequestParam(defaultValue = AppConstants.SORT_JORUNAL_BY) String sortBy,
+    @RequestParam(defaultValue = AppConstants.SORT_DIR) String sortOrder){
+        JournalResponse response = journalService.getAllJournalEntry(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
