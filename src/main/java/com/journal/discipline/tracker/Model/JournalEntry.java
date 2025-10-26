@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class JournalEntry {
     @Id
     @GeneratedValue(strategy=GenerationType.UUID)
-    private UUID Id;
+    private UUID journalId;
 
     private LocalDate date; 
 
