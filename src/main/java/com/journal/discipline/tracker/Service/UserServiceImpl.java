@@ -59,15 +59,44 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
         return userResponse;
     }
     
+    
+    
+    
+           /*TODO:
+         * Deleting user
+         */
+    
+    @Override
+    public UserDTO deleteUser(UUID userId) {
+       User user =userRespository.findById(userId)
+       .orElseThrow(() -> new ApiException("Cannot find user"));
+       
+       userRespository.deleteById(userId);
+       
+       return modelMapper.map(user, UserDTO.class);
+        
+    }
+    @Override
+    public UserDTO updateUsername(UserDTO user, UUID userId) {
+        /*Map the DTO from the user*/
+        User newUser = modelMapper.map(user, User.class) ;
+        /*Then retrieve the current user */
+        User savedUser = userRespository.findById(userId).orElseThrow(() -> new ApiException("Unable to retriev user from the database"));
+        /*set the information using setterrs */
+        savedUser.setUsername(newUser.getUsername());
+
+        /*resave the user */
+        userRespository.save(savedUser);
+        return modelMapper.map(savedUser, UserDTO.class);
+    }
+    
 
 
 
        /*TODO:
      * Editing user information i.e username
      */
+    
 
-
-       /*TODO:
-     * Deleting user
-     */
+     
 }
