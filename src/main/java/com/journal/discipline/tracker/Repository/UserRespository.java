@@ -11,4 +11,5 @@ import com.journal.discipline.tracker.Model.User;
 @Repository
 public interface UserRespository extends JpaRepository<User, UUID> {
     Optional<User> findByUsername(String username);
+        
 }
