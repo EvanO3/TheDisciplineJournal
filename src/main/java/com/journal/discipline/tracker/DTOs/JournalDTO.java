@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JournalDTO {
-    private UUID id;
+    private UUID journalId;
     private LocalDate date;
     private String title;
     private String accomplishment;

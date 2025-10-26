@@ -37,14 +37,12 @@ public class JournalController {
         return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
   
     }
-    /*TODO:
-     * Pagination
-     */
+    
 
     @GetMapping("/public/journal")
     public ResponseEntity<JournalResponse> getAllEntries(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
     @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-    @RequestParam(defaultValue = AppConstants.SORT_JORUNAL_BY) String sortBy,
+    @RequestParam(defaultValue = AppConstants.SORT_JOURNAL_BY) String sortBy,
     @RequestParam(defaultValue = AppConstants.SORT_DIR) String sortOrder){
         JournalResponse response = journalService.getAllJournalEntry(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(response, HttpStatus.OK);
