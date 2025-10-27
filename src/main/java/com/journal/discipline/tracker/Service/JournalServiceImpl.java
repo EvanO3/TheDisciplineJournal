@@ -23,7 +23,9 @@ import com.journal.discipline.tracker.DTOs.JournalDTO;
 import com.journal.discipline.tracker.DTOs.JournalResponse;
 import com.journal.discipline.tracker.Exceptions.ApiException;
 import com.journal.discipline.tracker.Model.JournalEntry;
+import com.journal.discipline.tracker.Model.User;
 import com.journal.discipline.tracker.Repository.JournalRepository;
+import com.journal.discipline.tracker.Repository.UserRespository;
 
 import jakarta.transaction.Transactional;
 
@@ -36,22 +38,27 @@ public class JournalServiceImpl implements JournalService{
     @Autowired
     private JournalRepository repository;
 
+    @Autowired
+    private UserRespository userRespository;
     /*TODO:
-        - Currently Working
-     * Refactor method when user is created to save journal entry with userId    
+       - Ensure 1 Journal Enx
      */
 
      @Transactional
-    public JournalDTO createJournalEntry(JournalDTO journalDTO) {
+    public JournalDTO createJournalEntry(JournalDTO journalDTO, UUID userId) {
         /*First map the DTO to 
          * to the Journal Model so you can query to see if the entry is present in the DB
          */
+
+      User user = userRespository.findById(userId).orElseThrow(() -> new ApiException("Unable to save Entry as no user available"));
       JournalEntry entry = modelMapper.map(journalDTO, JournalEntry.class);
         
-       JournalEntry savedEntry = repository.findByTitle(entry.getTitle());
-       if(savedEntry !=null){
+       Optional<JournalEntry> savedEntry = repository.findByUserIdAndTitle(userId, entry.getTitle());
+       if(savedEntry.isPresent() ){
         throw new ApiException("Entry with title : " +entry.getTitle() + "is already present");
        }
+       /*After finding the user, setting the user to be associated with their jounral */
+       entry.setUser(user);
 
        repository.save(entry);
        return modelMapper.map(entry, JournalDTO.class);

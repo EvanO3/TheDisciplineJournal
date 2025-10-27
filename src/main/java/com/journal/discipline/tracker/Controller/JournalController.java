@@ -31,9 +31,9 @@ public class JournalController {
     @Autowired
     private JournalService journalService;
 
-    @PostMapping("/public/journal")
-    public ResponseEntity<JournalDTO> createJournalEntry(@RequestBody JournalDTO journalDTO) {
-        JournalDTO savedEntry = journalService.createJournalEntry(journalDTO);
+    @PostMapping("/public/journal/{userId}")
+    public ResponseEntity<JournalDTO> createJournalEntry(@RequestBody JournalDTO journalDTO, @PathVariable UUID userId) {
+        JournalDTO savedEntry = journalService.createJournalEntry(journalDTO, userId);
         return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
   
     }

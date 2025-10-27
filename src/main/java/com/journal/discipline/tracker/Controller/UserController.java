@@ -22,6 +22,8 @@ import com.journal.discipline.tracker.DTOs.UserResponse;
 import com.journal.discipline.tracker.Model.User;
 import com.journal.discipline.tracker.Service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -30,7 +32,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
     private UserService userService;
     
     @PostMapping("/user")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody  UserDTO user){
         logger.info("This is the controller getting the user: {}", user);
        UserDTO createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
@@ -50,7 +52,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserController.clas
     }
 
     @PutMapping("/user/{userId}")
-    public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO userDTO, @PathVariable UUID userId){
+    public ResponseEntity<UserDTO> updateUsername( @Valid @RequestBody UserDTO userDTO, @PathVariable UUID userId){
         UserDTO user = userService.updateUsername(userDTO,userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

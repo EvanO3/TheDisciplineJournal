@@ -7,7 +7,7 @@ import com.journal.discipline.tracker.DTOs.JournalResponse;
 
 public interface JournalService {
     /*Defining all operations and return types here */
-    JournalDTO createJournalEntry(JournalDTO journalDTO);
+    JournalDTO createJournalEntry(JournalDTO journalDTO, UUID userId);
     JournalResponse getAllJournalEntry(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
     JournalDTO updateJournalEntry(JournalDTO journalDTO, UUID id);
     JournalDTO deleteJournalEntry(UUID id);
