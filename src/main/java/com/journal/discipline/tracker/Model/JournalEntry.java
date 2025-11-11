@@ -23,7 +23,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/*TODO:
+ * add Validations to inputs and add @Valid anotation to controller
+ * 
+ */
 @Entity
 @Data
 @AllArgsConstructor
