@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.journal.discipline.tracker.DTOs.JournalDTO;
@@ -26,9 +28,7 @@ import com.journal.discipline.tracker.Repository.UserRespository;
 
 @Service
 public class UserServiceImpl implements UserService {
- /*TODO:
-     * creating a user
-*/
+ 
 
   @Autowired
 private ModelMapper modelMapper;
@@ -38,6 +38,9 @@ private UserRespository userRespository;
 
 @Autowired
 private JournalRepository journalRepository;
+
+@Autowired
+private BCryptPasswordEncoder passwordEncoder;
 
 private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
@@ -51,6 +54,8 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
             throw new ApiException("User already Exists");
         }
 
+        
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRespository.save(newUser);
         return modelMapper.map(newUser, UserDTO.class);
         
@@ -64,10 +69,11 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
         User user = userRespository.findById(userId)
         .orElseThrow(()-> new ApiException("User with Id : " + userId + " Does not exist"));
 
+
         List<JournalEntry> usersJournalEntries = journalRepository.findByUserId(userId);
-        if(usersJournalEntries.isEmpty()){
-            throw new  ApiException("No Journal Entries associated with User" );
-        }
+        // if(user == null && usersJournalEntries.isEmpty()){
+        //     throw new  ApiException("User does not exist" );
+        // }
 
        List<String> journals = usersJournalEntries.stream().map(entries -> entries.getTitle()).collect(Collectors.toList());
         //set the user response information and return the user response
@@ -83,10 +89,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
     
     
     
-           /*TODO:
-         * Deleting user
-         */
-    
+        
     @Override
     public UserDTO deleteUser(UUID userId) {
        User user =userRespository.findById(userId)
@@ -114,10 +117,6 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
 
 
 
-       /*TODO:
-     * Editing user information i.e username
-     */
-    
 
      
 }
