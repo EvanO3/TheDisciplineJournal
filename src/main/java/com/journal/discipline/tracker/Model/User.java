@@ -9,10 +9,13 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.journal.discipline.tracker.Enums.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,7 +47,7 @@ public class User {
     private String username;
 
     @NotBlank(message="Password is required")
-    @Size(min=8, max =20, message="Password must be between 8 and 20 characters")
+    @Size(min=8, max =100, message="Password must be between 8 and 20 characters")
     
     /*For small projects this is fine, but for enterprise grade this logic must
      * be upgraded into a class
@@ -57,8 +60,7 @@ public class User {
      * and 1 special character
      * must also be between 8 and 30 chars long
      */
-    @Pattern(regexp ="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,30}$",
-    message = "Password must be at least 8 characters long, include 1 uppercase, 1 lowercase, 1 number, 1 special character, and contain no spaces")
+    
     
     private String password;
 
@@ -76,6 +78,8 @@ public class User {
     private double avgDisciplineScore;
 
 
+    @Enumerated(EnumType.STRING)
+    private Role roles;
     /*Cascade all will make sure all operations are propgated to the relevant relationships
     - FetchType.Lazy makes sure the relevant entites are loaded when asked for not loaded instantly
     - if eagar was used it would be loaded when user is loaded(only use egar when needed)
@@ -88,10 +92,15 @@ public class User {
     public void prePersist(){
         this.createdAt = LocalDateTime.now();
         this.updatedAt= LocalDateTime.now();
+        this.roles = Role.USER;
     }
 
     @PreUpdate
     public void postPersist(){
         this.updatedAt = LocalDateTime.now();
+    }
+
+     public void setPassword(String password) {
+        this.password = password != null ? password.trim() : null;
     }
 }
