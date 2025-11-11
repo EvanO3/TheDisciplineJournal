@@ -19,8 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.journal.discipline.tracker.DTOs.UserDTO;
 import com.journal.discipline.tracker.DTOs.UserResponse;
+import com.journal.discipline.tracker.Exceptions.ApiException;
+import com.journal.discipline.tracker.Jwt.JwtUtils;
 import com.journal.discipline.tracker.Model.User;
 import com.journal.discipline.tracker.Service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -28,33 +33,48 @@ public class UserController {
 private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
-    
-    @PostMapping("/user")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
-        logger.info("This is the controller getting the user: {}", user);
-       UserDTO createdUser = userService.createUser(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-    }
+ 
+    @Autowired
+    JwtUtils jwtUtils;
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<UserResponse> retrieveUser(@PathVariable UUID userId){
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> retrieveUser(HttpServletRequest request ){
+        UUID userId = provideUserIdFromRequest(request);
+
         UserResponse user = userService.retrieveUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
-     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable UUID userId){
+     @DeleteMapping("/user")
+    public ResponseEntity<UserDTO> deleteUser( HttpServletRequest request){
+        
+        UUID userId = provideUserIdFromRequest(request);
         UserDTO user = userService.deleteUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("/user/{userId}")
-    public ResponseEntity<UserDTO> updateUsername(@RequestBody UserDTO userDTO, @PathVariable UUID userId){
+    @PutMapping("/user")
+    public ResponseEntity<UserDTO> updateUsername( @Valid @RequestBody UserDTO userDTO, HttpServletRequest request){
+        UUID userId = provideUserIdFromRequest(request);
         UserDTO user = userService.updateUsername(userDTO,userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
 
+
+
+
+    /*Helper function for user Id */
+
+    private UUID provideUserIdFromRequest(HttpServletRequest request){
+        String token = jwtUtils.getJwtTokenFromHeader(request);
+        String extractedUserId = jwtUtils.getUserIdFromJwt(token);
+
+        if(extractedUserId.isEmpty() || extractedUserId ==null){
+            throw new ApiException("Failed to retrieve user Id");
+        }
+        return UUID.fromString(extractedUserId);
+    }
 }
