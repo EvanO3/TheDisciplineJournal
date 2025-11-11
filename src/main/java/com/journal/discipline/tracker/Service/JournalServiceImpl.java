@@ -41,7 +41,7 @@ public class JournalServiceImpl implements JournalService{
     @Autowired
     private UserRespository userRespository;
     /*TODO:
-       - Ensure 1 Journal Enx
+       - Ensure 1 Journal PER DAY
      */
 
      @Transactional
