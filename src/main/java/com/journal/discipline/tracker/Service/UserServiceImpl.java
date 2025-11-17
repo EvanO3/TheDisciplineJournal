@@ -24,7 +24,7 @@ import com.journal.discipline.tracker.Exceptions.ApiException;
 import com.journal.discipline.tracker.Model.JournalEntry;
 import com.journal.discipline.tracker.Model.User;
 import com.journal.discipline.tracker.Repository.JournalRepository;
-import com.journal.discipline.tracker.Repository.UserRespository;
+import com.journal.discipline.tracker.Repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
   @Autowired
 private ModelMapper modelMapper;
 @Autowired
-private UserRespository userRespository;
+private UserRepository userRespository;
 
 
 @Autowired
