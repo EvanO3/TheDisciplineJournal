@@ -15,6 +15,9 @@ import com.journal.discipline.tracker.Model.User;
 
 public class UserDetailsImpl implements UserDetails {
 
+
+
+    
   private static final long serialVersionUID =1L;
 
     private final User user;
