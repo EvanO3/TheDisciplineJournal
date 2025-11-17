@@ -46,7 +46,4 @@ public class Habit {
     @JoinColumn(name ="user_id")
     private User user;
 
-
-    
-
 }
