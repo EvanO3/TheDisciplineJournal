@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.journal.discipline.tracker.Exceptions.ApiException;
 import com.journal.discipline.tracker.Security.UserDetailsImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -96,6 +97,19 @@ public class JwtUtils {
 
 
 
+      public UUID provideUserIdFromRequest(HttpServletRequest request){
+        String token = getJwtTokenFromHeader(request);
+        String extractedUserId = getUserIdFromJwt(token);
+
+        if(extractedUserId.isEmpty() || extractedUserId ==null){
+            throw new ApiException("Failed to retrieve user Id");
+        }
+        return UUID.fromString(extractedUserId);
+    }
+
+
+
+
         public boolean validateJwtToken(String authToken){
         try{
             System.out.println("Validate");
@@ -115,5 +129,8 @@ public class JwtUtils {
         }
         return false;
     }
+
+
+    
 
 }
