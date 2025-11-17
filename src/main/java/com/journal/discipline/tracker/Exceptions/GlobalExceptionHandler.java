@@ -38,4 +38,26 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    /*Specific usecase for if t */
+    @ExceptionHandler(UnauthorizationException.class)
+    public ResponseEntity<APIResponse> myUnAuthorizationException(UnauthorizationException e){
+        String message = e.getMessage();
+        APIResponse response = new APIResponse(message, false);
+        
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+ 
+    @ExceptionHandler(ResourceNotFound.class)
+    public ResponseEntity<APIResponse> myResourceNotFoundException(ResourceNotFound e){
+        String message = e.getMessage();
+
+        APIResponse response = new APIResponse(message, false);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+
+
+
 }
