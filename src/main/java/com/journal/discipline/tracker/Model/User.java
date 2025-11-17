@@ -88,6 +88,14 @@ public class User {
     private List<JournalEntry> journal = new ArrayList<>();
     
     
+    @OneToMany(mappedBy ="user", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<Habit> habits = new ArrayList<>();
+
+
+
+
+
+
     @PrePersist
     public void prePersist(){
         this.createdAt = LocalDateTime.now();

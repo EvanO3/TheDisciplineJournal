@@ -25,7 +25,7 @@ import com.journal.discipline.tracker.Exceptions.ApiException;
 import com.journal.discipline.tracker.Model.JournalEntry;
 import com.journal.discipline.tracker.Model.User;
 import com.journal.discipline.tracker.Repository.JournalRepository;
-import com.journal.discipline.tracker.Repository.UserRespository;
+import com.journal.discipline.tracker.Repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -39,7 +39,7 @@ public class JournalServiceImpl implements JournalService{
     private JournalRepository repository;
 
     @Autowired
-    private UserRespository userRespository;
+    private UserRepository userRespository;
     /*TODO:
        - Ensure 1 Journal PER DAY
      */

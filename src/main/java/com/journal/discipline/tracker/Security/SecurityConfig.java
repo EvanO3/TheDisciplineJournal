@@ -53,7 +53,7 @@ public class SecurityConfig  {
          .authorizeHttpRequests((auth) -> 
         auth.requestMatchers("/api/auth/**")
         .permitAll()
-        .requestMatchers("/h2/**").permitAll()
+        .requestMatchers("/h2-console/**").permitAll()
         .requestMatchers("/api/user").permitAll()
         .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults())
