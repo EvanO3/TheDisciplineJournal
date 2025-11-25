@@ -1,7 +1,7 @@
 package com.journal.discipline.tracker.Jwt;
 
 import java.io.IOException;
-import java.util.UUID;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.journal.discipline.tracker.Security.UserDetailsServiceImpl;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,8 +63,8 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 
 
 
-                }catch(Exception e){
-                    System.out.println("Cannot set user authentication: " + e.getMessage());
+                }catch(JwtException | IllegalArgumentException e){
+                  logger.error("Cannot set user authentication: {}" , e.getMessage());
                 }
                 //tells spring the filter you made is done and to proceed to the next
                 filterChain.doFilter(request, response);
