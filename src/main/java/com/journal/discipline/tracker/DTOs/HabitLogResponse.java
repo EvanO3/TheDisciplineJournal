@@ -1,6 +1,6 @@
 package com.journal.discipline.tracker.DTOs;
 
-import java.util.List;
+import java.time.LocalDate;
 
 
 
@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HabitResponse {
-    List<HabitDTO> habitContent;
-
+public class HabitLogResponse {
+    private  HabitDTO habit;
+    private boolean completionStatus;
+    private LocalDate logDate;
 }
+
+
+

@@ -1,18 +1,17 @@
 package com.journal.discipline.tracker.Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.journal.discipline.tracker.Enums.Role;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,13 +20,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PostPersist;
+
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,8 +41,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID Id;
-    @NotBlank(message="Username is required")
-    @Size(min=2, max =15, message="Username must be between 2 and 15 chars")
+   
     private String username;
 
     @NotBlank(message="Password is required")
@@ -64,8 +62,7 @@ public class User {
     
     private String password;
 
-    @NotBlank(message="Email cannot be blank")
-    @Email(message="a valid email must be provided")
+
     private String email;
 
     
@@ -76,6 +73,7 @@ public class User {
     private int streakCount;
     private int longestStreak;
     private double avgDisciplineScore;
+    private LocalDate streakIncrementDate;
 
 
     @Enumerated(EnumType.STRING)
@@ -111,4 +109,17 @@ public class User {
      public void setPassword(String password) {
         this.password = password != null ? password.trim() : null;
     }
+
+
+    public void incrementStreak(){
+        streakCount++;
+        setStreakCount(streakCount);
+
+
+        if( streakCount >longestStreak){
+            longestStreak = streakCount;
+        }
+        
+    }
+
 }

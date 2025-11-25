@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.journal.discipline.tracker.DTOs.HabitDTO;
 import com.journal.discipline.tracker.DTOs.HabitResponse;
-import com.journal.discipline.tracker.Exceptions.ApiException;
+
 import com.journal.discipline.tracker.Jwt.JwtUtils;
 import com.journal.discipline.tracker.Service.HabitService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@RequestMapping("/api/public")
+@RequestMapping("/api")
 @RestController
 public class HabitController {
     @Autowired
@@ -32,7 +32,7 @@ public class HabitController {
     @Autowired
     private HabitService habitService;
 
-    @PostMapping("/habit")
+    @PostMapping("/public/habit")
     public ResponseEntity<HabitDTO> createHabit(@RequestBody HabitDTO habitDTO, HttpServletRequest request){
         
             UUID userId = jwtUtils.provideUserIdFromRequest(request);
@@ -42,7 +42,7 @@ public class HabitController {
     }
 
 
-      @GetMapping("/habit")
+      @GetMapping("/public/habit")
     public ResponseEntity<HabitResponse> getAllHabits(HttpServletRequest request){
             UUID userId = jwtUtils.provideUserIdFromRequest(request);
            HabitResponse response = habitService.getAllHabits(userId);
@@ -50,7 +50,7 @@ public class HabitController {
         
     }
 
-    @DeleteMapping("/habit/{habitId}")
+    @DeleteMapping("/public/habit/{habitId}")
     public ResponseEntity<HabitResponse> deleteHabit(HttpServletRequest request, @PathVariable UUID habitId){
             UUID userId = jwtUtils.provideUserIdFromRequest(request);
             habitService.deleteHabit(habitId, userId);
@@ -59,7 +59,7 @@ public class HabitController {
     }
 
 
-    @PutMapping("/habit/{habitId}")
+    @PutMapping("/public/habit/{habitId}")
     public ResponseEntity<HabitDTO> updateHabit(@PathVariable UUID habitId, @RequestBody HabitDTO habitDTO, HttpServletRequest request){
         UUID userId = jwtUtils.provideUserIdFromRequest(request);
         HabitDTO responseDTO = habitService.updateHabit(habitDTO, habitId, userId);
