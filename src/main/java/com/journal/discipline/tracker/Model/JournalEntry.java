@@ -8,11 +8,11 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.journal.discipline.tracker.Enums.Emotion;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,13 +37,13 @@ public class JournalEntry {
     @GeneratedValue(strategy=GenerationType.UUID)
     private UUID journalId;
 
-    @CreationTimestamp
-    private LocalDate date; 
+  
+    private LocalDate submissionDate; 
 
-    @NotBlank
+
     private String title;
     
-    @NotBlank
+
     private String accomplishment;
 
     private String reflection;
@@ -55,6 +55,10 @@ public class JournalEntry {
     
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+   
+
 
 
     @ManyToOne
