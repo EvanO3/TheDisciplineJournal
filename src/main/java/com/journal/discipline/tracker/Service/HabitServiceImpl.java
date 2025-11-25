@@ -1,10 +1,9 @@
 package com.journal.discipline.tracker.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -40,7 +39,7 @@ public class HabitServiceImpl implements HabitService {
      
     @Transactional
     public HabitDTO createHabit(HabitDTO habitDTO, UUID Id) {
-        logger.info("User ID: {}", Id);
+       
         /*Map the Data given by the user to habit model */
         Habit createdHabit = modelMapper.map(habitDTO, Habit.class);
         /* Check in the DB if they have a habit like this*/
@@ -49,9 +48,8 @@ public class HabitServiceImpl implements HabitService {
             throw new ApiException("Habit with the same title already exists");
         }
 
-        /*if the title is open then search for the user */
-        User user = userRespository.findById(Id).orElseThrow(
-            () -> new ApiException("Failed to find user"));
+       
+        User user = userRespository.getReferenceById(Id);
         
         /*Store the user in the db */
         createdHabit.setUser(user);
