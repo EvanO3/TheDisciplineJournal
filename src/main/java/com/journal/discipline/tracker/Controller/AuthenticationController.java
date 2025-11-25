@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +24,7 @@ import com.journal.discipline.tracker.Jwt.JwtUtils;
 import com.journal.discipline.tracker.Security.UserDetailsImpl;
 import com.journal.discipline.tracker.Service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -67,6 +68,14 @@ public ResponseEntity<LoginResponse> login(@RequestBody LoginRequestDTO loginReq
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+
+
+
+}
+
+@PostMapping("/logout")
+public ResponseEntity<?> logout(){
+ return new ResponseEntity<>("Logged Out User", HttpStatus.OK);
 }
 
 }
