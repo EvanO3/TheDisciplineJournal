@@ -121,11 +121,11 @@ public class JwtUtils {
         }catch(MalformedJwtException e){
             logger.error("Malformed JWT Exception", e.getMessage());
         }catch(ExpiredJwtException e){
-            logger.error("Malformed JWT Exception", e.getMessage());
+            logger.error("Expired JWT Exception", e.getMessage());
         }catch(UnsupportedJwtException e){
-             logger.error("Malformed JWT Exception", e.getMessage());
+             logger.error("False JWT Exception", e.getMessage());
         }catch(IllegalArgumentException e){
-             logger.error("Malformed JWT Exception", e.getMessage());
+             logger.error("Illegal Argument JWT Exception", e.getMessage());
         }
         return false;
     }

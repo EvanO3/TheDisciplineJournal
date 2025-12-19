@@ -58,8 +58,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
 
     @Transactional
     public UserDTO createUser(UserDTO user) {
-        logger.info("This is the user being pass: {}", user);
-
+      
         User newUser = modelMapper.map(user, User.class);
 
         Optional<User> savedUser = userRespository.findByUsername(newUser.getUsername());
@@ -148,7 +147,7 @@ private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.cla
     public SummaryDTO getUserDailySummary(UUID userId) {
         /*Find Users score */
         StreakData userSteakData= userRespository.findStreakDataById(userId);
-         SummaryDTO userSummary = new SummaryDTO();
+        SummaryDTO userSummary = new SummaryDTO();
 
         /*Find the Users Habit log for the day */
 
